@@ -1,0 +1,7 @@
+# files
+*.exe
+
+# directories
+/ClipImage
+/ClipParam
+
