@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -10,28 +11,27 @@ class ClipStart
     [STAThread]
     static void Main()
     {
-        string str;
+        string target;
         clipboardText = Clipboard.GetText();
         clipboardText = clipboardText.Trim();
 
         // create Process object
         System.Diagnostics.Process p = new System.Diagnostics.Process();
-
         // get path of cmd.exe
         p.StartInfo.FileName = System.Environment.GetEnvironmentVariable("ComSpec");
-        // enable to read outpu
-        // p.StartInfo.UseShellExecute = false;
-        // p.StartInfo.RedirectStandardOutput = true;
-        // p.StartInfo.RedirectStandardInput = false;
         // not to display window
         p.StartInfo.CreateNoWindow = true;
-        // set arguments
-        str = "\"" + clipboardText + "\"";
-        p.StartInfo.Arguments = @"/c start """" " + str;
-        // start
-        p.Start();
 
-        // Console.WriteLine(p.StartInfo.Arguments);
+        // set string
+        target = Regex.Replace( clipboardText, "<|>", "" );
+        if (!File.Exists(target) && !Directory.Exists(target)) {
+            target = Regex.Match( target, @"^.*\\" ).Value;
+        }
+        target = "\"" + target+ "\"";
+        // for debug
+        // Console.WriteLine(target);
+        p.StartInfo.Arguments = @"/c start """" " + target;
+        p.Start();
         // Console.ReadLine();
     }
 }
