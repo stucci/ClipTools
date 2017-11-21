@@ -23,7 +23,7 @@ class ClipStart
         p.StartInfo.CreateNoWindow = true;
 
         // set string
-        target = Regex.Replace( clipboardText, "<|>", "" );
+        target = Regex.Replace( clipboardText, "<|>|＜|＞", "" );
         if (!File.Exists(target) && !Directory.Exists(target)) {
             target = Regex.Match( target, @"^.*\\" ).Value;
         }
