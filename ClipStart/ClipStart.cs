@@ -23,11 +23,12 @@ class ClipStart
         p.StartInfo.CreateNoWindow = true;
 
         // set string
-        target = Regex.Replace( clipboardText, "<|>|＜|＞", "" );
+        target = Regex.Replace( clipboardText, "<|>|＜|＞|(file:)|\"|\"", "" );
+        target = Regex.Replace( target, "/", "\\" );
         if (!File.Exists(target) && !Directory.Exists(target)) {
             target = Regex.Match( target, @"^.*\\" ).Value;
         }
-        target = "\"" + target+ "\"";
+        target = "\"" + target + "\"";
         // for debug
         // Console.WriteLine(target);
         p.StartInfo.Arguments = @"/c start """" " + target;
